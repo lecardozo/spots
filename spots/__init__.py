@@ -71,8 +71,8 @@ class LocationHistory(pd.DataFrame):
                 Preprocessed location history dataframe.
         """
         df = self.copy()
-        df.latitudeE7 = df.latitudeE7.apply(lambda x: x*10e-8)
-        df.longitudeE7 = df.longitudeE7.apply(lambda x: x*10e-8)
+        df.latitudeE7 = df.latitudeE7 * 10e-8
+        df.longitudeE7 = df.longitudeE7 * 10e-8
         df.timestampMs = pd.to_datetime(self.timestampMs, unit='ms')
         df['activity.timestamp'] = pd.to_datetime(
             df['activity.timestampMs'], unit='ms'
