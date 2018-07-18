@@ -5,5 +5,6 @@ setup(
     version='1.0',
     description='Google Location History utilities',
     author='Lucas Cardozo',
-    author_email='lucasecardozo@gmail.com'
+    author_email='lucasecardozo@gmail.com',
+    packages=['spots']
 )

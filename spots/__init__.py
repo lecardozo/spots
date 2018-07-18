@@ -4,7 +4,6 @@ import pandas as pd
 from pandas.io.json import json_normalize
 from datetime import timedelta
 from haversine import haversine
-from sklearn.cluster import DBSCAN
 from glob import glob
 
 from .staypoint import StayPointDetection
