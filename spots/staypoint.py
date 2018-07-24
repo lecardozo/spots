@@ -14,6 +14,8 @@ class StayPointDetection():
     def fit(self, lochis):
         """
         Find stay points based on time and distance threshold
+        Implementation based on:
+        Li et al. (2008). Mining user similarity based on location history
         """
         df = lochis
         npoints = df.shape[0]
