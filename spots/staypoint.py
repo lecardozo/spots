@@ -16,7 +16,6 @@ class StayPointDetection():
         Find stay points based on time and distance threshold
         """
         df = lochis
-        df = df.sort_values('timestamp', ascending=True)
         npoints = df.shape[0]
         stay_labels = np.full(npoints, -1)
         stay_id = 0
@@ -31,10 +30,10 @@ class StayPointDetection():
                     delta_t = df.loc[df.index[j], 'timestamp'] -\
                               df.loc[df.index[i], 'timestamp']
                     if delta_t[0] > self.time:
-                        flag = True
-                        stay_labels[i:j-1] = stay_id
+                        stay_labels[i:j] = stay_id
                         i = j
                         stay_id += 1
+                        flag = True
                     break
                 j += 1
             if not flag:
