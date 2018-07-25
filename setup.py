@@ -6,5 +6,10 @@ setup(
     description='Google Location History utilities',
     author='Lucas Cardozo',
     author_email='lucasecardozo@gmail.com',
-    packages=['spots']
+    packages=['spots'],
+    install_requires=[
+        'scikit-learn',
+        'pandas',
+        'haversine'
+    ]
 )

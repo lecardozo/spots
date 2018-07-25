@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from pandas.io.json import json_normalize
 from datetime import timedelta
-from haversine import haversine
 from glob import glob
 
 from .staypoint import StayPointDetection
