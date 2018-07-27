@@ -9,7 +9,8 @@ setup(
     packages=['spots'],
     install_requires=[
         'scikit-learn',
+        'scipy',
         'pandas',
-        'haversine'
+        'numba'
     ]
 )

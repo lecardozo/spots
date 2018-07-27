@@ -106,7 +106,8 @@ def test_stay_point_detection(lhistory, intervals):
     lhistory = lhistory.loc[lhistory['accuracy'] <= 30,:].copy()
     lhistory.loc[:,'period'] = time_segment(lhistory.timestamp, intervals)
     lhistory = lhistory.loc[pd.notnull(lhistory['period']), :]
-    spd = StayPointDetection(time=timedelta(minutes=15),
-                             distance=0.5)
-    labels = spd.fit_predict(lhistory)
+    lhistory = lhistory.sort_values('timestamp')
+    spd = StayPointDetection()
+    labels = spd.fit_predict(lhistory[['lat', 'long']].values,
+                             lhistory['timestamp'].values)
     assert isinstance(labels, np.ndarray)
