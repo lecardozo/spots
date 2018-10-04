@@ -22,7 +22,7 @@ def haversine(a, b):
     a = np.radians(a)
     b = np.radians(b)
     delta_lat = b[0] - a[0]
-    delta_lon = a[0] - a[1]
+    delta_lon = b[1] - a[1]
     dist = (np.sin(delta_lat * 0.5) ** 2 + np.cos(a[0]) *
             np.cos(b[0]) * np.sin(delta_lon * 0.5) ** 2)
     dist = 2 * 6371 * np.arcsin(np.sqrt(dist))
