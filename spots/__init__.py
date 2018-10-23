@@ -102,8 +102,10 @@ class LocationHistory(pd.DataFrame):
                 cols.append((col, ''))
         cols = pd.MultiIndex.from_tuples(cols)
         df.columns = cols
-        df.reset_index(drop=True, inplace=True)
+        df = df.sort_values('timestamp', ascending=True)
+        df = df.reset_index(drop=True)
         return df
+
 
 def time_segment(timestamp, intervals):
     """

@@ -53,13 +53,15 @@ def data():
         } ]
       }
     ] }
-    ''' 
+    '''
+
 
 @pytest.fixture()
 def location_json(tmpdir_factory, data):
     p = tmpdir_factory.mktemp('data').join('location.json')
     p.write(data)
     return str(p)
+
 
 @pytest.fixture()
 def intervals():
@@ -103,8 +105,8 @@ def test_time_segment(lhistory, intervals):
 
 
 def test_stay_point_detection(lhistory, intervals):
-    lhistory = lhistory.loc[lhistory['accuracy'] <= 30,:].copy()
-    lhistory.loc[:,'period'] = time_segment(lhistory.timestamp, intervals)
+    lhistory = lhistory.loc[lhistory['accuracy'] <= 30, :].copy()
+    lhistory.loc[:, 'period'] = time_segment(lhistory.timestamp, intervals)
     lhistory = lhistory.loc[pd.notnull(lhistory['period']), :]
     lhistory = lhistory.sort_values('timestamp')
     spd = StayPointDetection()

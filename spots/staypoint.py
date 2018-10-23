@@ -1,8 +1,9 @@
+import warnings
 import numpy as np
 from numba import jit, f8, i8
 from numba.types import NPDatetime, NPTimedelta
 from sklearn.base import BaseEstimator, ClusterMixin
-
+from .utils import is_sorted
 
 @jit(f8(f8[:], f8[:]), nopython=True)
 def haversine(a, b):
@@ -70,8 +71,10 @@ def _detect_staypoints(X, timestamps, distance, time):
         j = i + 1
         flag = False
         while j < npoints:
-            center = np.array([X[i, 0], X[i, 1]])
-            next_point = np.array([X[j, 0], X[j, 1]])
+            center = np.array([ X[i, 0],
+                                X[i, 1] ])
+            next_point = np.array([ X[j, 0],
+                                    X[j, 1] ])
             dist = haversine(center, next_point)
             if dist > distance:
                 delta_t = timestamps[j] - timestamps[i]
@@ -84,6 +87,7 @@ def _detect_staypoints(X, timestamps, distance, time):
             j += 1
         if not flag:
             i += 1
+
     return stay_labels
 
 
@@ -125,9 +129,19 @@ class StayPointDetection(BaseEstimator, ClusterMixin):
 
     def fit(self, X, timestamps):
         """ Performs stay point detection """
-        self.labels_ = _detect_staypoints(X, timestamps,
-                                          self.distance,
-                                          self.time.astype('timedelta64[ns]'))
+        if not is_sorted(timestamps):
+            time_sorted = np.argsort(timestamps)
+            res = _detect_staypoints(X[time_sorted],
+                                     timestamps[time_sorted],
+                                     self.distance,
+                                     self.time.astype('timedelta64[ns]'))
+            self.labels_ = res[np.argsort(time_sorted)]
+        else:
+            self.labels_ = _detect_staypoints(X[time_sorted],
+                                              timestamps[time_sorted],
+                                              self.distance,
+                                              self.time.astype('timedelta64[ns]'))
+
 
     def fit_predict(self, X, timestamps):
         """ Performs stay point detection and returns stay points labels """
