@@ -1,8 +1,6 @@
 import pytest
 import numpy as np
-import pandas as pd
-from datetime import datetime, timedelta
-from spots import LocationHistory, StayPointDetection, time_segment
+from spots import LocationHistory, StayPointDetection
 
 
 @pytest.fixture(scope='session')
@@ -64,28 +62,13 @@ def location_json(tmpdir_factory, data):
 
 
 @pytest.fixture()
-def intervals():
-    return [{
-        'name': 'exp',
-        'min': timedelta(days=3),
-        'max': timedelta(days=10),
-        'relative_to': datetime(2017, 1, 1)
-    }]
-
-
-@pytest.fixture()
-def relative_to():
-    return datetime(2016, 12, 6)
-
-
-@pytest.fixture()
 def default_columns():
     default_cols = [('accuracy', ''),
                     ('activity', 'confidence'),
                     ('activity', 'timestamp'),
                     ('activity', 'type'),
                     ('lat', ''),
-                    ('long', ''),
+                    ('lon', ''),
                     ('timestamp', '')]
     return set(default_cols)
 
@@ -99,17 +82,8 @@ def test_columns(lhistory, default_columns):
     assert set(lhistory.columns) == default_columns
 
 
-def test_time_segment(lhistory, intervals):
-    segmented = time_segment(lhistory.timestamp, intervals)
-    assert isinstance(segmented, np.ndarray)
-
-
-def test_stay_point_detection(lhistory, intervals):
-    lhistory = lhistory.loc[lhistory['accuracy'] <= 30, :].copy()
-    lhistory.loc[:, 'period'] = time_segment(lhistory.timestamp, intervals)
-    lhistory = lhistory.loc[pd.notnull(lhistory['period']), :]
-    lhistory = lhistory.sort_values('timestamp')
+def test_stay_point_detection(lhistory):
     spd = StayPointDetection()
-    labels = spd.fit_predict(lhistory[['lat', 'long']].values,
+    labels = spd.fit_predict(lhistory[['lat', 'lon']].values,
                              lhistory['timestamp'].values)
     assert isinstance(labels, np.ndarray)
