@@ -25,7 +25,7 @@ locdf.head()
 ```
 
 #### Calculate stay points for your trajectory
-The StayPointDetection class implements the same interface used by sklearn clustering
+The `StayPointDetection` class implements the same interface used by `sklearn` clustering
 algorithms.
 
 ```python
