@@ -1,4 +1,4 @@
-# spots
+# spots [![Build Status](https://travis-ci.org/lecardozo/spots.svg?branch=master)](https://travis-ci.org/lecardozo/spots)
 
 Google Location History utilities
 
